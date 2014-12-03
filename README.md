@@ -1,4 +1,4 @@
 notifmngr
 =========
 
-Android Notifications Manager
+Android Notifications Manager Library
