@@ -16,9 +16,11 @@
 
 package com.ademsha.notifmngr;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.service.notification.StatusBarNotification;
 
 import org.json.JSONArray;
@@ -44,14 +46,16 @@ public class NotificationHubCommandReceiver extends BroadcastReceiver {
         if(intent.getStringExtra("command").equals("cancel-all")){
             cancelAllNotifications();
         }
-        else if(intent.getStringExtra("command").equals("cancel-list")){
+        else if(intent.getStringExtra("command").equals("cancel-list")
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             cancelNotifications(intent);
         }
-        else if(intent.getStringExtra("command").equals("cancel")){
+        else if(intent.getStringExtra("command").equals("cancel")
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             cancelNotification(intent);
         }
         else if(intent.getStringExtra("command").equals("get-all")){
-            getAllActiveNotifications(context, intent);
+            getAllActiveNotifications(context);
         }
         else if(intent.getStringExtra("command").equals("get-list")){
             getActiveNotifications(context, intent);
@@ -63,26 +67,29 @@ public class NotificationHubCommandReceiver extends BroadcastReceiver {
         if(keys.length>0) {
             JSONArray notifications = new JSONArray();
             for (StatusBarNotification statusBarNotification : notificationHub.getActiveNotifications(keys)) {
-                notifications.put(NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification).toString());
+                notifications.put(NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification));
             }
             Intent dataIntent = new Intent(NotificationHubConfig.NOTIFICATION_HUB_DATA_RECIEVER_INTENT);
-            dataIntent.putExtra("type", "get-all");
+            dataIntent.putExtra("command", "get-all");
             dataIntent.putExtra("data", " " + notifications.toString() + "\n");
-            context.getApplicationContext().sendBroadcast(intent);
+            context.getApplicationContext().sendBroadcast(dataIntent);
         }
     }
 
-    private void getAllActiveNotifications(Context context, Intent intent) {
+    private void getAllActiveNotifications(Context context) {
         JSONArray notifications=new JSONArray();
         for (StatusBarNotification statusBarNotification : notificationHub.getActiveNotifications()) {
-            notifications.put(NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification).toString());
+            notifications.put(NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification));
         }
-        Intent dataIntent = new  Intent(NotificationHubConfig.NOTIFICATION_HUB_DATA_RECIEVER_INTENT);
-        dataIntent.putExtra("type","get-all");
-        dataIntent.putExtra("data"," " + notifications.toString() + "\n");
-        context.getApplicationContext().sendBroadcast(intent);
+        if(notifications.length()>0) {
+            Intent dataIntent = new Intent(NotificationHubConfig.NOTIFICATION_HUB_DATA_RECIEVER_INTENT);
+            dataIntent.putExtra("command", "get-all");
+            dataIntent.putExtra("data", " " + notifications.toString() + "\n");
+            context.getApplicationContext().sendBroadcast(dataIntent);
+        }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void cancelNotification(Intent intent) {
         String key=intent.getStringExtra("data");
         if(!key.isEmpty()) {
@@ -90,6 +97,7 @@ public class NotificationHubCommandReceiver extends BroadcastReceiver {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void cancelNotifications(Intent intent) {
         String[] keys=intent.getStringArrayExtra("data");
         if(keys.length>0) {

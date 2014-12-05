@@ -21,13 +21,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class NotificationHubDataReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getExtras()!=null) {
-            String type=intent.getStringExtra("type");
-            Toast.makeText(context,type,Toast.LENGTH_SHORT).show();
+            String command=intent.getStringExtra("command");
+            if(command.equals("get-all")){
+                String data=intent.getStringExtra("data");
+                JSONArray notifications;
+                try {
+                    notifications= new JSONArray(data);
+                    for (int i =0; i < notifications.length(); i++)
+                    {
+                        JSONObject notification=notifications.getJSONObject(i);
+                        Toast.makeText(context, notification.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                Toast.makeText(context, command, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
