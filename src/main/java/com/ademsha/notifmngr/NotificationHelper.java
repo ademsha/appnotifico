@@ -19,6 +19,7 @@ package com.ademsha.notifmngr;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.Service;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -135,5 +136,47 @@ public class NotificationHelper {
         NotificationManager notificationManager = (NotificationManager) preparedNotification.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(preparedNotification.getId(), builder.build());
 
+    }
+
+    public static void notifyForForegroundService(final Service service, final PreparedNotification preparedNotification) {
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(preparedNotification.getContext())
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setOnlyAlertOnce(true);
+
+        if(preparedNotification.getPendingIntentForActivity()!=null){
+            builder.setContentIntent(preparedNotification.getPendingIntentForService());
+        }
+
+        builder.setContentTitle(preparedNotification.getTitle());
+        builder.setContentText(preparedNotification.getText());
+
+        if(preparedNotification.getLargeIcon()!=null) {
+            builder.setLargeIcon(preparedNotification.getLargeIcon());
+        }
+
+        if(preparedNotification.getSmallIcon()>0) {
+            builder.setSmallIcon(preparedNotification.getSmallIcon());
+        }
+
+        builder.setTicker(preparedNotification.getTicker());
+
+        if(!preparedNotification.getExpanded().equals("") && !preparedNotification.getExpandedSummary().equals("")) {
+            builder.setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText(preparedNotification.getExpanded())
+                    .setBigContentTitle(preparedNotification.getTitle())
+                    .setSummaryText(preparedNotification.getExpandedSummary()));
+        }
+
+        if(preparedNotification.getPendingIntentForActivity()!=null) {
+            builder.setContentIntent(preparedNotification.getPendingIntentForActivity());
+        }
+
+        Notification notification;
+        notification = builder.build();
+        notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
+        service.startForeground(10000, notification);
     }
 }

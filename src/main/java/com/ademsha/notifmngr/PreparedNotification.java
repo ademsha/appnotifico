@@ -48,6 +48,11 @@ public class PreparedNotification {
        return PendingIntent.getActivity(getContext(), 0, getIntent(), 0);
     }
 
+    public PendingIntent getPendingIntentForService()
+    {
+        return PendingIntent.getActivity(getContext(), 0, getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+    }
+
     public String getTicker() {
         return ticker;
     }
