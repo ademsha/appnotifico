@@ -35,7 +35,7 @@ public class NotificationAccessHelper {
     }
 
     public static void askUser(final Context context) {
-        if(!isAccessEnabled || !checkAccessViaContentResolver(context)) {
+        if(!isAccessEnabled || !checkAccessViaContentResolver(context)){
             new AlertDialog.Builder(context)
                     .setMessage("Please enable access to notifications for this app")
                     .setTitle("Notification Access")

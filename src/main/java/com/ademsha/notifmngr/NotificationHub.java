@@ -70,7 +70,7 @@ public class NotificationHub extends NotificationListenerService {
 
     private void sendDataToReceiver(StatusBarNotification statusBarNotification, String type) {
         Intent intent = new  Intent(NotificationHubConfig.NOTIFICATION_HUB_DATA_RECIEVER_INTENT);
-        intent.putExtra("type", type);
+        intent.putExtra("command", type);
         intent.putExtra("data",NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification).toString());
         sendBroadcast(intent);
     }
