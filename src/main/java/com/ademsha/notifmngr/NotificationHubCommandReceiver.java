@@ -67,7 +67,7 @@ public class NotificationHubCommandReceiver extends BroadcastReceiver {
         if(keys.length>0) {
             JSONArray notifications = new JSONArray();
             for (StatusBarNotification statusBarNotification : notificationHub.getActiveNotifications(keys)) {
-                notifications.put(NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification));
+                notifications.put(NotificationDataHelper.getStatusBarNotificationDataAsJSON(statusBarNotification));
             }
             Intent dataIntent = new Intent(NotificationHubConfig.NOTIFICATION_HUB_DATA_RECIEVER_INTENT);
             dataIntent.putExtra("command", "get-all");
@@ -79,7 +79,7 @@ public class NotificationHubCommandReceiver extends BroadcastReceiver {
     private void getAllActiveNotifications(Context context) {
         JSONArray notifications=new JSONArray();
         for (StatusBarNotification statusBarNotification : notificationHub.getActiveNotifications()) {
-            notifications.put(NotificationHelper.getStatusBarNotificationDataAsJSON(statusBarNotification));
+            notifications.put(NotificationDataHelper.getStatusBarNotificationDataAsJSON(statusBarNotification));
         }
         if(notifications.length()>0) {
             Intent dataIntent = new Intent(NotificationHubConfig.NOTIFICATION_HUB_DATA_RECIEVER_INTENT);

@@ -53,7 +53,8 @@ public class NotificationAccessHelper {
                                     // do nothing
                                 }
                             })
-                    .create().show();
+                    .create()
+                    .show();
         }
     }
 
