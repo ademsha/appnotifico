@@ -1,4 +1,4 @@
-notifmngr
+appnotifico
 =========
 
-Android Notifications Manager Library
+Library for notifications management on Android OS devices
