@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ademsha.notifmngr;
+package com.ademsha.appnotifico;
 
 import android.app.Notification;
 import android.app.NotificationManager;

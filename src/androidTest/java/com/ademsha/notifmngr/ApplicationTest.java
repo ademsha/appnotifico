@@ -1,4 +1,4 @@
-package com.ademsha.notifmngr;
+package com.ademsha.appnotifico;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

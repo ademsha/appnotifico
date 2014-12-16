@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ademsha.notifmngr;
+package com.ademsha.appnotifico;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;

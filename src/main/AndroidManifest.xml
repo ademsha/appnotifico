@@ -16,13 +16,13 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ademsha.notifmngr" >
+    package="com.ademsha.appnotifico" >
 
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 
     <application>
 
-        <service android:name="com.ademsha.notifmngr.NotificationHub"
+        <service android:name="com.ademsha.appnotifico.NotificationHub"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:label="Notification Listener Service">
             <intent-filter>
