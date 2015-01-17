@@ -4,7 +4,7 @@ appnotifico
 Library for notifications management on Android OS devices
 
 =========
-#LICENSE
+###LICENSE
 
 Copyright 2014 ademsha.com
 
